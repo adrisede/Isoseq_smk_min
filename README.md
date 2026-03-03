@@ -13,12 +13,11 @@
 
 # MAS-Seq processing pipeline
 
-This is a pipeline designed to process [MAS-Seq data from PacBio](https://isoseq.how/). In particular, this pipeline helps with the following steps: clustering, alignment, merging, collapsing and annotating with pigeon, as well as the inclusion of annotations back to the refined `flnc.bam` files. The pipeline allows to combine different samples (PS0001, PS0002) within a condition (treated/untreated) per individual.
-Multiple individuals can be included for a combined analysis, ensuring that all samples receive consistent transcript/isoform IDs for downstream analyses.
+This is a pipeline designed to process [MAS-Seq data from PacBio](https://isoseq.how/). In particular, this pipeline helps with the following steps: merging flncs from same sample, alignment, collapsing and annotating with pigeon. 
 
-The pipeline takes unaligned `flnc.bam` files as input. If multiple `flnc.bam` files exist for a single condition (replicates), they can all be added to the YAML file and will be merged prior to any processing. We highly recommend including a phased VCF file generated from DeepVariant (Fiber-seq from same sample) + HiPhase, since we use this file to help haplotag each read. Ideally, this phased VCF should be specified on the `config.yaml` file. If no phased VCF is available, an artificial `HP:i:0` tag will be assigned to the annotations.
+The pipeline takes unaligned `flnc.bam` files as input. If multiple `flnc.bam` files exist for a single condition (replicates), they can all be added to the YAML file and will be merged prior to any processing.
 
-In this pipeline, we also incorporate custom Iso-Seq tags into the aligned `flnc.bam` files as part of the final output. These tags aim to integrate information derived from the Pigeon output file `pigeon_classification.txt`:
+Pending to reincorporate tags. These tags aim to integrate information derived from the Pigeon output file `pigeon_classification.txt`:
 
 ```
 haplotype (HP:i:)
@@ -87,4 +86,5 @@ nohup snakemake -s workflow/Snakefile \
 -p -k --verbose --retries=1 --rerun-incomplete \
 --directory results > nohup.capture
 ```
+
 
