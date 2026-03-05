@@ -62,37 +62,37 @@ rule all:
             **combinations_dict,
         ),
         expand(
-            "collapse/{individual}_{label}/collapsed.gff",
+            "collapse/collapsed.gff",
             zip,
             **combinations_dict,
         ),
         expand(
-            "collapse/{individual}_{label}/collapsed.abundance.txt",
+            "collapse/collapsed.abundance.txt",
             zip,
             **combinations_dict,
         ),
         expand(
-            "collapse/{individual}_{label}/collapsed.read_stat.txt",
+            "collapse//collapsed.read_stat.txt",
             zip,
             **combinations_dict,
         ),
         expand(
-            "collapse/{individual}_{label}/collapsed.flnc_count.txt",
+            "collapse/collapsed.flnc_count.txt",
             zip,
             **combinations_dict,
         ),
         expand(
-            "pigeon/{individual}_{label}/collapsed.prepared.gff",
+            "pigeon/collapsed.prepared.gff",
             zip,
             **combinations_dict,
         ),
         expand(
-            "pigeon/{individual}_{label}/pigeon_classification.txt",
+            "pigeon/pigeon_classification.txt",
             zip,
             **combinations_dict,
         ),
         expand(
-            "pigeon/{individual}_{label}/saturation.txt",
+            "pigeon/saturation.txt",
             zip,
             **combinations_dict,
         ),
@@ -306,12 +306,12 @@ rule pigeon_prepare_annot:
         "envs/env2.yml"
     input:
         gtf=config["pigeon_annot"],
-        collapsed_gff="collapse/{individual}_{label}/collapsed.gff",
+        collapsed_gff="collapse/collapsed.gff",
     output:
         gtf="annotations/annotations.sorted.gtf",
         pgi="annotations/annotations.sorted.gtf.pgi",
-        prepared_collapsed="pigeon/{individual}_{label}/collapsed.prepared.gff",
-        prepared_collapsed_pgi="pigeon/{individual}_{label}/collapsed.prepared.gff.pgi",
+        prepared_collapsed="pigeon/collapsed.prepared.gff",
+        prepared_collapsed_pgi="pigeon/collapsed.prepared.gff.pgi",
     params:
         script=workflow.source_path("scripts/clean_pigeon_gtf.awk"),
     log:
