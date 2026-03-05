@@ -72,7 +72,7 @@ rule all:
             **combinations_dict,
         ),
         expand(
-            "collapse//collapsed.read_stat.txt",
+            "collapse/collapsed.read_stat.txt",
             zip,
             **combinations_dict,
         ),
@@ -293,8 +293,6 @@ rule collapse:
         """
         exec &> >(tee -a {log})
         set -euo pipefail
-
-        mkdir -p collapse/{wildcards.individual}_{wildcards.label}
 
         isoseq collapse --do-not-collapse-extra-5exons --num-threads {threads} \
             {input.bam} {output.collapsed_gff}
