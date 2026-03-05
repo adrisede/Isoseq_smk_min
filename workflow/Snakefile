@@ -277,10 +277,10 @@ rule collapse:
         bam="aligned/{individual}_{label}_modified_aligned.bam",
         bai="aligned/{individual}_{label}_modified_aligned.bam.bai",
     output:
-        collapsed_gff="collapse/{individual}_{label}/collapsed.gff",
-        collapsed_abundance="collapse/{individual}_{label}/collapsed.abundance.txt",
-        collapsed_readstat="collapse/{individual}_{label}/collapsed.read_stat.txt",
-        collapsed_count="collapse/{individual}_{label}/collapsed.flnc_count.txt",
+        collapsed_gff="collapse/collapsed.gff",
+        collapsed_abundance="collapse/collapsed.abundance.txt",
+        collapsed_readstat="collapse/collapsed.read_stat.txt",
+        collapsed_count="collapse/collapsed.flnc_count.txt",
     log:
         "logs/collapse/{individual}_{label}.log",
     threads: config.get("threads", 4)
@@ -323,7 +323,7 @@ rule pigeon_prepare_annot:
         exec &> >(tee -a {log})
         set -euo pipefail
 
-        mkdir -p annotations pigeon/{wildcards.individual}_{wildcards.label}
+        mkdir -p annotations
 
         raw_gtf="annotations/annotations.raw.gtf"
         clean_gtf="annotations/annotations.clean.gtf"
@@ -342,8 +342,6 @@ rule pigeon_prepare_annot:
 
         cp {input.collapsed_gff} {output.prepared_collapsed}
         pigeon prepare {output.prepared_collapsed}
-        mv pigeon/{wildcards.individual}_{wildcards.label}/collapsed.prepared.sorted.gff {output.prepared_collapsed}
-        mv pigeon/{wildcards.individual}_{wildcards.label}/collapsed.prepared.sorted.gff.pgi {output.prepared_collapsed_pgi}
 
         rm -f "$raw_gtf" "$clean_gtf"
         """
@@ -353,13 +351,13 @@ rule pigeon_process:
     conda:
         "envs/env2.yml"
     input:
-        prepared_collapsed="pigeon/{individual}_{label}/collapsed.prepared.gff",
-        collapsed_count="collapse/{individual}_{label}/collapsed.flnc_count.txt",
+        prepared_collapsed="pigeon/collapsed.prepared.gff",
+        collapsed_count="collapse/collapsed.flnc_count.txt",
         prepared_gtf="annotations/annotations.sorted.gtf",
         prepared_index="annotations/annotations.sorted.gtf.pgi",
     output:
-        classification="pigeon/{individual}_{label}/pigeon_classification.txt",
-        report="pigeon/{individual}_{label}/saturation.txt",
+        classification="pigeon/pigeon_classification.txt",
+        report="pigeon/saturation.txt",
     log:
         "logs/pigeon_process/{individual}_{label}.log",
     params:
